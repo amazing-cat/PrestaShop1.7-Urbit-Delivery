@@ -6,11 +6,12 @@
 * @license
 *}
 
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js">
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
     var urb_carrier_id = "{$carrier_id|escape:'htmlall':'UTF-8'}";
     var user = "{$logged_user_id|escape:'htmlall':'UTF-8'}";
     var zip_code_deliverable = "{$zip_code_deliverable|escape:'htmlall':'UTF-8'}";
-    $(function($) {
+    function initUrbit($) {
         var radio_selected = 0;
         var ret_field_validate, ret_field_validate_ajax, del_is_gift, del_gift_receiver_phone, del_time, del_name, del_first_name, del_last_name, del_street, del_zip_code, del_city, del_contact_phone, del_contact_mail, del_advise_message, del_type;
         var firstDeliveryMinutes= "00";
@@ -46,38 +47,38 @@
         });
         var newLogic = currentdate.getFullYear() + "-" + (currentdate.getMonth() + 1) + "-" + currentdate.getDate() + " " + (currentdate.getHours()) + ":" + (currentdate.getMinutes()<10?'0':'') + currentdate.getMinutes() + ":" + (currentdate.getSeconds()<10?'0':'') +  currentdate.getSeconds();
         var validate_error;
-        $('[name=processCarrier]').removeClass('gray-out');
+        $('[name=confirmDeliveryOption]').removeClass('gray-out');
         function emptyMessage(error_id) {
             $(error_id).html("This field cannot be empty!");
             $(error_id).css("display", "block");
-            $('[name=processCarrier]').addClass('gray-out');
+            $('[name=confirmDeliveryOption]').addClass('gray-out');
             validate_error = 1;
             return false;
         }
         function numericMessage(error_id) {
             $(error_id).html("This value is not valid!");
             $(error_id).css("display", "block");
-            $('[name=processCarrier]').addClass('gray-out');
+            $('[name=confirmDeliveryOption]').addClass('gray-out');
             validate_error = 1;
             return false;
         }
         function phoneValidationErrorMessage(error_id) {
             $(error_id).html("Invalid mobile number. Please, set phone number with country code");
             $(error_id).css("display", "block");
-            $('[name=processCarrier]').addClass('gray-out');
+            $('[name=confirmDeliveryOption]').addClass('gray-out');
             validate_error = 1;
             return false;
         }
         function noScpDateSelect() {
             $("#del_spdate_error").html("Please Select Date and Time!");
-            $('[name=processCarrier]').addClass('gray-out');
+            $('[name=confirmDeliveryOption]').addClass('gray-out');
             validate_error = 1;
             return false;
         }
         function apiErrorMessage(error_class, error_id, error_message) {
             $(error_class).css("display", "block");
             $(error_id).html(error_message);
-            $('[name=processCarrier]').addClass('gray-out');
+            $('[name=confirmDeliveryOption]').addClass('gray-out');
             validate_error = 1;
             return false;
         }
@@ -113,9 +114,9 @@
                     emptyMessage(value.error_id);
                 }
             });
-            if ($("#urb_options_now i").hasClass('icon-check')) {
+            if ($("#urb_options_now i").hasClass('fa-check')) {
                 del_time = datetime;
-            } else if ($("#sp_time i").hasClass('icon-check')) {
+            } else if ($("#sp_time i").hasClass('fa-check')) {
                 var spDate = $("#sp_time_date").val();
                 var spHour = $("#sp_time_hour").val();
                 var spMinute = $("#sp_time_minute").val();
@@ -127,7 +128,7 @@
             //validate phone numbers
             del_contact_phone = $("#contact_mobile_number").val();
             phoneNumberValidation(del_contact_phone, "#del_gift_phone_error", "#del_contact_mobile_number_error" )
-            if ($("#hp_urbit_check_box_1 i").hasClass('icon-check-square-o')) {
+            if ($("#hp_urbit_check_box_1 i").hasClass('fa-check-square')) {
                 del_gift_receiver_phone = $("#hp_urbit_del_phone").val();
                 phoneNumberValidation(del_gift_receiver_phone, "#del_gift_phone_error", "#del_gift_phone_format_error" )
             }
@@ -136,8 +137,8 @@
                 numericMessage("#del_zip_error");
             }
             if (validate_error == 1) {
-                if (!$("[name=processCarrier]").hasClass('gray-out')) {
-                    $('[name=processCarrier]').addClass('gray-out');
+                if (!$("[name=confirmDeliveryOption]").hasClass('gray-out')) {
+                    $('[name=confirmDeliveryOption]').addClass('gray-out');
                 }
             }
             return validate_error !== 1;
@@ -148,15 +149,15 @@
             if (!window.__fieldValidationAjax_Flag) {
                 window.__fieldValidationAjax_Flag = 1;
             }
-            if ($("#urb_options_now i").hasClass('icon-check')) {
+            if ($("#urb_options_now i").hasClass('fa-check')) {
                 del_time = datetime;
                 del_type = 'OneHour';
             }
-            if ($("#sp_time i").hasClass('icon-check')) {
+            if ($("#sp_time i").hasClass('fa-check')) {
                 del_time = $("#sp_time_date").val() + " " + $("#sp_time_hour").val() + ":" + $("#sp_time_minute").val() + ":00";
                 del_type = 'Specific';
             }
-            if ($("#hp_urbit_check_box_1 i").hasClass('icon-check-square-o')) {
+            if ($("#hp_urbit_check_box_1 i").hasClass('fa-check-square')) {
                 del_is_gift = 1;
                 del_gift_receiver_phone = $("#hp_urbit_del_phone").val();
             }
@@ -202,21 +203,21 @@
                     if (validate_delivery.possible_hours == true && validate_delivery.ajaxCheckValidateDelivery == "true") {
                         validate_error = 0;
                         addressValidationError(false);
-                        if ($("[name=processCarrier]").hasClass('gray-out')) {
-                            $('[name=processCarrier]').removeClass('gray-out');
+                        if ($("[name=confirmDeliveryOption]").hasClass('gray-out')) {
+                            $('[name=confirmDeliveryOption]').removeClass('gray-out');
                         }
                     } else if (validate_delivery.ajaxCheckValidateDelivery == "false") {
-                        if (!$("[name=processCarrier]").hasClass('gray-out')) {
-                            $('[name=processCarrier]').addClass('gray-out');
+                        if (!$("[name=confirmDeliveryOption]").hasClass('gray-out')) {
+                            $('[name=confirmDeliveryOption]').addClass('gray-out');
                         }
                         addressValidationError(true);
                     } else {
-                        $('[name=processCarrier]').addClass('gray-out');
+                        $('[name=confirmDeliveryOption]').addClass('gray-out');
                         //shop specific
-                        if ($("#urb_options_now i").hasClass('icon-check')) {
+                        if ($("#urb_options_now i").hasClass('fa-check')) {
                             $('#urb_options_now').addClass('gray-out');
-                            $('#urb_options_now i').removeClass('icon-check');
-                            $('#sp_time i').addClass('icon-check');
+                            $('#urb_options_now i').removeClass('fa-check');
+                            $('#sp_time i').addClass('fa-check');
                             $('.hp_urbit_sp_time').stop(true, true).slideDown('slow');
                             getdeliveryDates();
                         }
@@ -232,7 +233,7 @@
             return true;
         }
         function initCart() {
-            var selected = $("input[type='radio']:checked");
+            var selected = $(".delivery-options-list  input[type='radio']:checked");
             if (selected.length > 0) {
                 if (urb_carrier_id == selected.val()) {
                     $(".delivery_option_logo").nextAll().eq(0).append("<span id='hp_urbit_spinner' style='float:right; font-size:25px; display:inline; margin-top:-25px !important; margin-left:200px !important;'><i class='icon-spinner icon-pulse'></i></span>");
@@ -285,10 +286,10 @@
             }
         }
         $(".urbit_del_validate").on('input', function () {
-            radio_selected = $("input[type='radio']:checked");
+            radio_selected = $(".delivery-options-list  input[type='radio']:checked");
             if (urb_carrier_id == radio_selected.val()) {
-                if (!$("[name=processCarrier]").hasClass('gray-out')) {
-                    $('[name=processCarrier]').addClass('gray-out');
+                if (!$("[name=confirmDeliveryOption]").hasClass('gray-out')) {
+                    $('[name=confirmDeliveryOption]').addClass('gray-out');
                 }
             }
             if (fieldValidation()) {
@@ -318,31 +319,32 @@
         });
         // *** Do you want to send as a gift? click function ****
         $("#hp_urbit_check_box_1").on("click", function () {
-            if ($(this).find('i.icon').hasClass("icon-square-o")) {
-                $(this).find('i.icon').removeClass("icon-square-o");
-                $(this).find('i.icon').addClass("icon-check-square-o");
+            if ($(this).find('i.far').hasClass("fa-square")) {
+                $(this).find('i.far').removeClass("fa-square");
+                $(this).find('i.far').addClass("fa-check-square");
                 $(".hp_urbit_ship_send").find('input[type="text"]').val("");
                 if (del_gift_receiver_phone == "") {
-                    $('[name=processCarrier]').addClass('gray-out');
+                    $('[name=confirmDeliveryOption]').addClass('gray-out');
                     validate_error = 1;
                 }
-            } else {
-                $(this).find('i.icon').removeClass("icon-check-square-o");
-                $(this).find('i.icon').addClass("icon-square-o");
+            } 
+            else {
+                $(this).find('i.far').removeClass("fa-check-square");
+                $(this).find('i.far').addClass("fa-square");
                 del_name = $("#hp_urbit_del_name").val("{$user_delivery_address.firstname|escape:'htmlall':'UTF-8'} {$user_delivery_address.lastname|escape:'htmlall':'UTF-8'}");
                 del_first_name = $("#hp_urbit_del_first_name").val("{$user_delivery_address.firstname|escape:'htmlall':'UTF-8'}");
                 del_last_name = $("#hp_urbit_del_last_name").val("{$user_delivery_address.lastname|escape:'htmlall':'UTF-8'}");
                 del_street = $("#hp_urbit_del_street").val("{$user_delivery_address.address1|escape:'htmlall':'UTF-8'}");
                 del_city = $("#hp_urbit_del_city").val("{$user_delivery_address.city|escape:'htmlall':'UTF-8'}");
                 del_zip_code = $("#hp_urbit_del_postcode").val({$user_delivery_address.postcode|escape:'htmlall':'UTF-8'});
-                            }
-                            $("#hp_urbit_del_phone").stop(true, true).slideToggle('fast');
+            }
+            $("#hp_urbit_del_phone").stop(true, true).slideToggle('fast');
             if (fieldValidation()) {
                 fieldValidationAjax();
             }
         });
-        $('[name=processCarrier]').click(function (e) {
-            radio_selected = $("input[type='radio']:checked");
+        $('[name=confirmDeliveryOption]').click(function (e) {
+            radio_selected = $(".delivery-options-list  input[type='radio']:checked");
             if (urb_carrier_id == radio_selected.val()) {
                 if (fieldValidation()){
                     fieldValidationAjax();
@@ -355,7 +357,7 @@
         });
         function updateCart()
         {
-            radio_selected = $("input[type='radio']:checked");
+            radio_selected = $(".delivery-options-list  input[type='radio']:checked");
             var mobile = $("#contact_mobile_number").val();
             if (!mobile.match(/^[+][0-9]/)) {
                 $("#mobile_no_error").css("display", "block");
@@ -369,14 +371,14 @@
                 }
                 del_is_gift = 0;
                 del_gift_receiver_phone = "";
-                if ($("#urb_options_now i").hasClass('icon-check')) {
+                if ($("#urb_options_now i").hasClass('fa-check')) {
                     del_time = datetime;
                     del_type = 'OneHour';
-                } else if ($("#sp_time i").hasClass('icon-check')) {
+                } else if ($("#sp_time i").hasClass('fa-check')) {
                     del_time = $("#sp_time_date").val() + " " + $("#sp_time_hour").val() + ":" + $("#sp_time_minute").val() + ":00";
                     del_type = 'Specific';
                 }
-                if ($("#hp_urbit_check_box_1 i").hasClass('icon-check-square-o')) {
+                if ($("#hp_urbit_check_box_1 i").hasClass('fa-check-square')) {
                     del_is_gift = 1;
                     del_gift_receiver_phone = $("#hp_urbit_del_phone").val();
                 }
@@ -412,20 +414,20 @@
                         fc         : 'module',
                         controller : 'ShippingOptions'
                     },
-                    success: function (data) {
+                    success: function (data) {                    
                     },
                     error: function (errorThrown) {
                     }
                 });
             }
         };
-        $('input[type="radio"]:checked').each(function () {
+        $('.delivery-options-list input[type="radio"]:checked').each(function () {
             if ($(this).val() == 'urb_it_sp_time') {
                 $("#sp_time_options").css("display", "block");
             }
         });
         $("#urb_options_sp_time").click(function () {
-            $('input[type="radio"]:checked').each(function () {
+            $('.delivery-options-list input[type="radio"]:checked').each(function () {
                 if ($(this).val() == 'urb_it_sp_time') {
                     $("#sp_time_options").css("display", "block");
                 } else {
@@ -434,7 +436,7 @@
             });
         });
         $("#urb_options_now").click(function () {
-            $('input[type="radio"]:checked').each(function () {
+            $('.delivery-options-list input[type="radio"]:checked').each(function () {
                 if ($(this).val() == 'urb_it_sp_time') {
                     $("#sp_time_options").css("display", "block");
                 } else {
@@ -458,9 +460,9 @@
             var icon = $(this).find('i');
             var allIcons = $('.hp_urbit_ship_p').find('i');
             $.each(allIcons, function (key, value) {
-                allIcons.removeClass("icon-check");
+                allIcons.removeClass("fa-check");
             });
-            icon.addClass("icon-check");
+            icon.addClass("fa-check");
             if ($(this).attr('id') == "sp_time") {
                 $('.hp_urbit_sp_time').stop(true, true).slideDown('slow');
             } else {
@@ -603,6 +605,25 @@
                  }
             });
         }
+    }
+
+    $(document).ready(function(){
+        $('section.js-current-step').addClass('urbit-current-step');
+        if($('#checkout-delivery-step').hasClass('urbit-current-step')){
+            $(initUrbit($));
+        }
+
+        $('.checkout-step').click(function(){
+            if(!$(this).hasClass('urbit-current-step') && !$(this).hasClass('-unreachable')){
+                $(initUrbit($));
+                $('.checkout-step').removeClass('urbit-current-step');
+                $(this).addClass('urbit-current-step');
+            }
+        });
+
+        $('.delivery-options-list input[type="radio"]').change(function () {
+            $(initUrbit($));
+        });
     });
 </script>
 
@@ -615,8 +636,8 @@
         <div class="col-sm-6 col-md-6 hp_urbit_ship_where_do_go">
             <h4 class="hp_urbit_ship_h4 hp_ub_now">{l s='When would you like your purchase?' mod='urbit'}</h4>
             <p  class="hp_urbit_validation_error" id="del_time_error"></p>
-            <p class="hp_urbit_ship_p" id="urb_options_now">{l s='Now' mod='urbit'} <i class="icon-check"></i></p>
-            <p id="sp_time" class="hp_urbit_ship_p">{l s='Specific time (CET)' mod='urbit'} <i class=""></i></p>
+            <p class="hp_urbit_ship_p" id="urb_options_now">{l s='Now' mod='urbit'} <i class="fas fa-check"></i></p>
+            <p id="sp_time" class="hp_urbit_ship_p">{l s='Specific time (CET)' mod='urbit'} <i class="fas"></i></p>
             <div class="row hp_urbit_sp_time">
                 <p class="hp_urbit_validation_error" style="padding-left: 15px;" id="del_spdate_error"></p>
                 <div class="col-xs-6">
@@ -637,7 +658,7 @@
             </div>
             <div class="hp_urbit_ship_send">
                 <h4 class="hp_urbit_ship_h4">{l s='Where would you like to recieve your purchase?' mod='urbit'}</h4>
-                <label id="hp_urbit_check_box_1" class="hp_urbit_ship_blue_p" for="c1"><i style="padding-right: 10px;" class="icon-gift"></i>{l s='Would you like to send your purchase as a gift?' mod='urbit'} <i class="icon icon-square-o"></i></label>
+                <label id="hp_urbit_check_box_1" class="hp_urbit_ship_blue_p" for="c1"><i style="padding-right: 10px;" class="fas fa-gift"></i>{l s='Would you like to send your purchase as a gift?' mod='urbit'} <i class="far fa-square"></i></label>
                 <input type="checkbox" id="c1" name="cc" />
 
                 <p class="hp_urbit_validation_error" id="del_first_name_error"></p>
@@ -715,14 +736,14 @@
 </div>
 
 <style>
+    #urb_options{
+        display: none;
+    }
     #hp_urbit_address_validation_error {
         display: none;
         color:#F13340;
         font-size: 16px;
         padding:5px 0px;
-    }
-    #urb_options{
-        display: none;
     }
     #msg_urb_now_not_available{
         display: none;

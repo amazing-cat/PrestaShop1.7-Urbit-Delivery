@@ -50,7 +50,10 @@ class Urbit extends UrbitAbstract
     {
         $installer = new UrbitInstaller($this);
 
-        return parent::install() && $installer->install();
+        return parent::install() && 
+        $installer->install() && $this->registerHook('header') &&
+        $this->registerHook('actionOrderStatusPostUpdate') &&
+        $this->registerHook('displayShoppingCart');
     }
 
     /**

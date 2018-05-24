@@ -423,6 +423,7 @@ p.num{
                             <option value="disabled">{l s='Disabled' mod='urbit'}</option>
                         </select>
                     </div>
+                    <br>
                     <div class="hp_urbit_offer_sp_time">
                         <span>{l s='Enable urb-it Specific Time for no of days:' mod='urbit'}</span>
                         <select  id="module_period" name="module_period">
@@ -432,36 +433,43 @@ p.num{
                             <option value="4">4</option>
                         </select>
                     </div>
+                    <br>
                     <div class="tab-2-input-area admin_mail">
                         <span style="width: 34%;">{l s='Send order failure report to email' mod='urbit'}</span>
                         <input id="URBIT_ADMIN_EMAIL" type="email" name="URBIT_ADMIN_EMAIL">
                     </div>
+                    <br>
                     <div class="admin_order_preparation_block">
                         <div class="tab-2-input-area admin_order_preparation">
                             <span style="width: 34%;">{l s='Now order auto-validation time' mod='urbit'}</span>
                             <input id="URBIT_ADMIN_AUTO_VALIDATION_TIME" type="text" name="URBIT_ADMIN_AUTO_VALIDATION_TIME">
                         </div>
+                        <br>
                         <div class="tab-2-input-area admin_order_preparation">
                             <span style="width: 34%;">{l s='Order status trigger for confirmation' mod='urbit'}</span>
                             <select id="URBIT_ADMIN_STATUS_TRIGGER" name="URBIT_ADMIN_STATUS_TRIGGER"></select>
                         </div>
                     </div>
+                    <br>
                     <div class="admin_fees_block">
                         <div class="tab-2-input-area admin_flat_fee">
                             <span style="width: 34%;">{l s='Urb-it Flat Fee (Eur)' mod='urbit'}</span>
                             <input id="URBIT_ADMIN_FLAT_FEE_EUR" type="text" name="URBIT_ADMIN_FLAT_FEE_EUR">
                         </div>
+                        <br>
                         <div class="tab-2-input-area admin_flat_fee">
                             <span style="width: 34%;">{l s='Urb-it Flat Fee (SEK)' mod='urbit'}</span>
                             <input id="URBIT_ADMIN_FLAT_FEE_SEK" type="text" name="URBIT_ADMIN_FLAT_FEE_SEK">
                         </div>
+                        <br>
                         <div class="tab-2-input-area admin_flat_fee">
                             <span style="width: 34%;">{l s='Urb-it Flat Fee (GBP)' mod='urbit'}</span>
                             <input id="URBIT_ADMIN_FLAT_FEE_GBP" type="text" name="URBIT_ADMIN_FLAT_FEE_GBP">
                         </div>
+                        <br>
                     </div>
                 </fieldset>
-                <input type="button" value="Save" id="save_general_data" name="save_general_data" />
+                <button type="button" value="Save" id="save_general_data" name="save_general_data" />Save</button>
             </div>
             <div style="display:none" class="alert" id="alert">Success</div>
 
@@ -477,31 +485,38 @@ p.num{
                 <fieldset id="tab-2-feild-1">
                     <legend>{l s='Settings' mod='urbit'}</legend>
                     <h3>{l s='API Production Environment Details' mod='urbit'}</h3>
+                    <br>
                     <div class="tab-2-input-area">
-                        <span>{l s='Urb-it API Key' mod='urbit'}</span>
-                        <input type="text" name="URBIT_API_CUSTOMER_KEY"  id="URBIT_API_CUSTOMER_KEY"/>
+                        <span style="padding-right: 22px;">{l s='Urb-it API Key' mod='urbit'}</span>
+                        <input type="text" name="URBIT_API_CUSTOMER_KEY"  id="URBIT_API_CUSTOMER_KEY" style="width: 25%;"/>
                     </div>
+                    <br>
                     <div class="tab-2-input-area">
                         <span>{l s='Bearer JWT token' mod='urbit'}</span>
-                        <input type="text" name="URBIT_API_BEARER_JWT_TOKEN" id="URBIT_API_BEARER_JWT_TOKEN" />
+                        <input type="text" name="URBIT_API_BEARER_JWT_TOKEN" id="URBIT_API_BEARER_JWT_TOKEN" style="width: 25%;" />
                     </div>
+                    <br>
                     <div class="tab-2-input-area">
-                        <span>{l s='API URL' mod='urbit'}</span>
-                        <input type="text" name="URBIT_API_URL"  id="URBIT_API_URL"/>
+                        <span style="padding-right: 65px;">{l s='API URL' mod='urbit'}</span>
+                        <input type="text" name="URBIT_API_URL"  id="URBIT_API_URL" style="width: 25%;"/>
                     </div>
+                    <br>
                     <h3>{l s='API Test Environment Details' mod='urbit'}</h3>
                     <div class="tab-2-input-area">
-                        <span>{l s='Urb-it API Key' mod='urbit'}</span>
-                        <input type="text" name="URBIT_API_TEST_CUSTOMER_KEY"  id="URBIT_API_TEST_CUSTOMER_KEY" />
+                        <span style="padding-right: 22px;">{l s='Urb-it API Key' mod='urbit'}</span>
+                        <input type="text" name="URBIT_API_TEST_CUSTOMER_KEY"  id="URBIT_API_TEST_CUSTOMER_KEY"  style="width: 25%;"/>
                     </div>
+                    <br>
                     <div class="tab-2-input-area">
                         <span>{l s='Bearer JWT token' mod='urbit'}</span>
-                        <input type="text" name="URBIT_API_TEST_BEARER_JWT_TOKEN"  id="URBIT_API_TEST_BEARER_JWT_TOKEN"/>
+                        <input type="text" name="URBIT_API_TEST_BEARER_JWT_TOKEN"  id="URBIT_API_TEST_BEARER_JWT_TOKEN" style="width: 25%;"/>
                     </div>
+                    <br>
                     <div class="tab-2-input-area">
-                        <span>{l s='API URL' mod='urbit'}</span>
-                        <input type="text"  name="URBIT_API_TEST_URL"  id="URBIT_API_TEST_URL" />
+                        <span style="padding-right: 65px;">{l s='API URL' mod='urbit'}</span>
+                        <input type="text"  name="URBIT_API_TEST_URL"  id="URBIT_API_TEST_URL" style="width: 25%;" />
                     </div>
+                    <br>
                     <h3>{l s='General API Settings' mod='urbit'}</h3>
                     <div>
                         <input type="checkbox" name="URBIT_ENABLE_TEST_MOD"  id="URBIT_ENABLE_TEST_MOD" value="enable_test">
@@ -520,7 +535,7 @@ p.num{
                      </div>
                 </fieldset>-->
                 <input   type="hidden" value="validate" name="validate" id="validate" />
-                <input type="button" value="Save" name="save_credentials_data" id="save_credentials_data" />
+                <button type="button" value="Save" name="save_credentials_data" id="save_credentials_data"/>Save</button>
             </form>
         </div>
 		<div style="display:none" class="alert" id="alert2">Success</div>

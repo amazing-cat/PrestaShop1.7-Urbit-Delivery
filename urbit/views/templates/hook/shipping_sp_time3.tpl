@@ -12,7 +12,7 @@
     var user = '{$logged_user_id|escape:'htmlall':'UTF-8'}';
     var zip_code_deliverable = '{$zip_code_deliverable|escape:'htmlall':'UTF-8'}';
     $(function($) {
-        var selected = $("input[type='radio']:checked");
+        var selected = $(".delivery-options-list  input[type='radio']:checked");
         if (selected.length > 0) {
             if (urb_carrier_id == selected.val()) {
                 $("#urb_options").css("display", "block");
@@ -39,13 +39,13 @@
             }
         }
 
-        $('input[type="radio"]:checked').each(function () {
+        $('.delivery-options-list input[type="radio"]:checked').each(function () {
             if ($(this).val() == 'urb_it_sp_time') {
                 $("#sp_time_options").css("display", "block");
             }
         });
         $("#urb_options_sp_time").click(function () {
-            $('input[type="radio"]:checked').each(function () {
+            $('.delivery-options-list input[type="radio"]:checked').each(function () {
                 if ($(this).val() == 'urb_it_sp_time') {
                     $("#sp_time_options").css("display", "block");
                 } else {
@@ -55,7 +55,7 @@
             });
         });
         $("#urb_options_now").click(function () {
-            $('input[type="radio"]:checked').each(function () {
+            $('.delivery-options-list input[type="radio"]:checked').each(function () {
                 if ($(this).val() == 'urb_it_sp_time') {
                     $("#sp_time_options").css("display", "block");
                 } else {
@@ -73,7 +73,7 @@
         });
 
     {* processCarrier button click *}
-{*        $('[name=processCarrier]').click(function () {
+{*        $('[name=confirmDeliveryOption]').click(function () {
             $.ajax({
                 url: '{$base_dir}module/urbit/UrbitCart',
                 type: 'post',

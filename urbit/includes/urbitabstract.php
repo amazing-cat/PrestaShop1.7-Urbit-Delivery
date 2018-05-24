@@ -236,10 +236,14 @@ abstract class UrbitAbstract extends CarrierModule
     //     //     $this->context->controller->addJS($this->_path.'/views/js/jquery.tools.min.js');
     //     // } 
 
-
     // }
-
-
+    public function hookHeader()
+    {
+        $this->context->controller->addCSS(
+            $this->_path . 'views/css/fontawesome-all.min.css'
+        );
+    }
+    
     /**
      * update status service code if change status in list carrier (shipping->carrier)
      * @param Array $params
@@ -1066,7 +1070,7 @@ abstract class UrbitAbstract extends CarrierModule
                 $carrier_id = $val['id_carrier'];
             }
         }
-
+        
         $this->smarty->assign(array(
             'user_delivery_address'    => $user_delivery_address,
             'user_billing_address'     => $user_billing_address,
@@ -1096,7 +1100,7 @@ abstract class UrbitAbstract extends CarrierModule
         );
 
         $apiResponse = UrbitStoreApi::createCheckout($bodyForRequest);
-
+        
         if (property_exists($apiResponse->args, "id")) {
             $this->context->cookie->checkoutIdFromApi = $apiResponse->args->id;
         }
@@ -1104,10 +1108,10 @@ abstract class UrbitAbstract extends CarrierModule
 
     /**
      * Hook for create cart (send POST request to Urb-it API)
-     * @param $summary
+     * @param $params
      * @return mixed
      */
-    public function hookActionCartSummary($summary)
+    public function hookDisplayShoppingCart($params)
     {
         $cart = new Cart($this->context->cart->id);
         $cartItems = $cart->getProducts();
@@ -1133,8 +1137,6 @@ abstract class UrbitAbstract extends CarrierModule
         if (property_exists($apiResponse->args, "id")) {
             $this->context->cookie->cartIdFromApi = $apiResponse->args->id;
         }
-
-        return $summary;
     }
 
     /**
@@ -1149,7 +1151,7 @@ abstract class UrbitAbstract extends CarrierModule
 
     public function hookDisplayOrderConfirmation($params)
     {
-        $objOrder = $params['objOrder']; // get order object from the orderconfirm hook
+        $objOrder = $params['order']; // get order object from the orderconfirm hook
 
         $order_cart_carrier = Db::getInstance()
             ->executeS(

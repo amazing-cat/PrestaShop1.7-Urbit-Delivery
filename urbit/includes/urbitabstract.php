@@ -1239,12 +1239,21 @@ abstract class UrbitAbstract extends CarrierModule
     public function checkOrdersStatusForUpdateCheckout($orderId, $orderStatusId)
     {
         $configOrderTriggerValue = Configuration::get('URBIT_ADMIN_STATUS_TRIGGER');
+        $configOrderCancelValue = Configuration::get('URBIT_ADMIN_STATUS_CANCEL');
 
         if ($configOrderTriggerValue && (int)$configOrderTriggerValue == $orderStatusId) {
             $cart = UrbitCart::getUrbitCartByOrderId($orderId);
 
             if (!empty($cart) && $cart[0]['is_send'] == "false") {
                 $this->sendUpdateCheckout($cart[0]['id_urbit_order_cart']);
+            }
+        }
+
+        if ($configOrderCancelValue && (int)$configOrderCancelValue == $orderStatusId) {
+            $cart = UrbitCart::getUrbitCartByOrderId($orderId);
+
+            if (!empty($cart)) {
+                UrbitCart::deleteUrbitCart($cart[0]['id_urbit_order_cart']);
             }
         }
     }

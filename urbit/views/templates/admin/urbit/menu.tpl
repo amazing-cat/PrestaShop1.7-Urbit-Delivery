@@ -226,6 +226,29 @@
 
             }
 
+            if (returnval.URBIT_ADMIN_STATUS_CANCEL_OPTIONS != false ) {
+                if (returnval.URBIT_ADMIN_STATUS_CANCEL_OPTIONS) {
+                    $('#URBIT_ADMIN_STATUS_CANCEL').append($('<option/>', {
+                        value: "",
+                        text : "None"
+                    }));
+                    $.each(returnval.URBIT_ADMIN_STATUS_CANCEL_OPTIONS, function (index, value) {
+                        $('#URBIT_ADMIN_STATUS_CANCEL').append($('<option/>', {
+                            value: value.id_order_state,
+                            text : value.name
+                        }));
+                    });
+                }
+            }
+
+            if(returnval.URBIT_ADMIN_STATUS_CANCEL != false ){
+                $("#URBIT_ADMIN_STATUS_CANCEL").val(returnval.URBIT_ADMIN_STATUS_CANCEL);
+
+            }else{
+                $("#URBIT_ADMIN_STATUS_CANCEL").val("");
+
+            }
+
             //  $("#URBIT_ENABLE_TEST_MOD").val(returnval.URBIT_ENABLE_TEST_MOD);
             if(returnval.URBIT_ENABLE_TEST_MOD){
                 $('#URBIT_ENABLE_TEST_MOD').prop('checked', true);
@@ -448,6 +471,10 @@ p.num{
                         <div class="tab-2-input-area admin_order_preparation">
                             <span style="width: 34%;">{l s='Order status trigger for confirmation' mod='urbit'}</span>
                             <select id="URBIT_ADMIN_STATUS_TRIGGER" name="URBIT_ADMIN_STATUS_TRIGGER"></select>
+                        </div>
+                        <div class="tab-2-input-area admin_order_preparation">
+                            <span style="width: 34%;">{l s='Order status trigger for delete' mod='urbit'}</span>
+                            <select id="URBIT_ADMIN_STATUS_CANCEL" name="URBIT_ADMIN_STATUS_CANCEL"></select>
                         </div>
                     </div>
                     <br>

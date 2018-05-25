@@ -238,6 +238,7 @@
                 if (urb_carrier_id == selected.val()) {
                     $(".delivery_option_logo").nextAll().eq(0).append("<span id='hp_urbit_spinner' style='float:right; font-size:25px; display:inline; margin-top:-25px !important; margin-left:200px !important;'><i class='icon-spinner icon-pulse'></i></span>");
                     $("#urb_options").css("display", "block");
+                    $("#urb_agreement").css("display", "block");
                     $("#hp_urbit_del_first_name").focus();
                     $("body, html").animate({
                         scrollTop: $("#urb_options")[0].scrollHeight
@@ -452,6 +453,7 @@
                     $(this).addClass('dissapear');
                     $("#zip_code_fail_msg").css("display", "block");
                     $("#urb_options").css("display", "none");
+                    $("#urb_agreement").css("display", "none");
                 }
             });
         }
@@ -733,10 +735,13 @@
     <div class="hp_urbit_validation_error_message" id="hp_urbit_address_validation_error">
         <p>Malformed address / Address outside the delivery area</p>
     </div>
+    
 </div>
+<div id="urb_agreement">By using Urb-it service you accept the <a href="https://urb-it.com/terms-of-service/">terms</a>, agree with the <a href="https://urb-it.com/privacy-policy/">privacy policy</a> and that your entered information is shared with your delivery assistant.</div>
 
 <style>
-    #urb_options{
+    #urb_options,
+    #urb_agreement{
         display: none;
     }
     #hp_urbit_address_validation_error {

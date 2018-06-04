@@ -49,28 +49,28 @@
         var validate_error;
         $('[name=confirmDeliveryOption]').removeClass('gray-out');
         function emptyMessage(error_id) {
-            $(error_id).html("This field cannot be empty!");
+            $(error_id).html("Ce champ ne peut pas être vide!!");
             $(error_id).css("display", "block");
             $('[name=confirmDeliveryOption]').addClass('gray-out');
             validate_error = 1;
             return false;
         }
         function numericMessage(error_id) {
-            $(error_id).html("This value is not valid!");
+            $(error_id).html("Cette valeur n'est pas valide!");
             $(error_id).css("display", "block");
             $('[name=confirmDeliveryOption]').addClass('gray-out');
             validate_error = 1;
             return false;
         }
         function phoneValidationErrorMessage(error_id) {
-            $(error_id).html("Invalid mobile number. Please, set phone number with country code");
+            $(error_id).html("Numéro de portable invalide. S'il vous plaît, définissez le numéro de téléphone avec le code du pays.");
             $(error_id).css("display", "block");
             $('[name=confirmDeliveryOption]').addClass('gray-out');
             validate_error = 1;
             return false;
         }
         function noScpDateSelect() {
-            $("#del_spdate_error").html("Please Select Date and Time!");
+            $("#del_spdate_error").html("S'il vous plaît sélectionner la date et l'heure!");
             $('[name=confirmDeliveryOption]').addClass('gray-out');
             validate_error = 1;
             return false;
@@ -581,7 +581,7 @@
         /*get the dates*/
         function getdeliveryDates() {
             var d = new Date();
-            var weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            var weekday = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
             $.ajax({
                 url: "{$base_url|escape:'htmlall':'UTF-8'}",
                 type: 'post',
@@ -737,7 +737,7 @@
     </div>
     
 </div>
-<div id="urb_agreement">By using Urb-it service you accept the <a href="https://urb-it.com/terms-of-service/">terms</a>, agree with the <a href="https://urb-it.com/privacy-policy/">privacy policy</a> and that your entered information is shared with your delivery assistant.</div>
+<div id="urb_agreement">En utilisant le service Urb-it vous acceptez nos <a target="_blank" href="https://urb-it.com/terms-of-service/">conditions d'utilisation</a>, et vous acceptez la <a target="_blank" href="https://urb-it.com/privacy-policy/">politique de confidentialité.</a></div>
 
 <style>
     #urb_options,

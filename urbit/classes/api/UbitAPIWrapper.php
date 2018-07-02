@@ -311,6 +311,24 @@ class UbitAPIWrapper
         return $this->send();
     }
 
+    /**
+     * Validates Postal Code.
+     *
+     * @param string $street
+     * @param string $postcode
+     * @param string $city
+     * @return UrbitShippingResponse object with error status, data and error message attributs.
+     */
+    public function validatePostalCode($postcode = '')
+    {
+        $this->getPath('v2/postalcodes/' . $postcode);
+
+        $this->method = 'GET';
+        $this->needAuthorization = false;
+
+        return $this->send();
+    }
+
     /*get cart ID from $smarty*/
 
     /**

@@ -50,10 +50,11 @@ class Urbit extends UrbitAbstract
     {
         $installer = new UrbitInstaller($this);
 
-        return parent::install() && 
+        return parent::install() &&
         $installer->install() && $this->registerHook('header') &&
         $this->registerHook('actionOrderStatusPostUpdate') &&
-        $this->registerHook('displayShoppingCart');
+        $this->registerHook('displayShoppingCart') &&
+        $this->registerHook('displayProductButtons');
     }
 
     /**
@@ -112,5 +113,20 @@ class Urbit extends UrbitAbstract
             'ajax_extra_cover_action' => 'ExtraCoverForm'
         ));
         return $this->display($this->name . '.php', 'extracarrier.tpl');
+    }
+
+    /**
+    * Request to validate postal Code
+    * @param $params
+    */
+    public function HookDisplayProductButtons()
+    {
+        $base_url = "";
+        $this->context->smarty->assign(
+            array('urbit_img_path'  => $this->_path.'views/img/',
+               'base_url'           => $base_url,
+          )
+        );
+        return $this->display($this->name . '.php', 'postcodevalidator.tpl');
     }
 }

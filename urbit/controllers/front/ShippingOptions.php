@@ -18,6 +18,9 @@ class UrbitShippingOptionsModuleFrontController extends FrontController
     public function displayAjax()
     {
         switch (true) {
+          case $this->isNotEmpty('postcode'):
+              $this->validatePostalCode();
+              break;
             case $this->isNotEmpty('validate_delivery'):
                 $this->validateDelivery();
                 break;
@@ -66,6 +69,18 @@ class UrbitShippingOptionsModuleFrontController extends FrontController
 
         return (int)$date->getTimestamp();
     }
+
+    protected function validatePostalCode()
+    {
+        $postcode = Tools::getValue('postcode');
+        $urbitStoreApi = new UrbitStoreApi();
+
+        //check postal code
+        $postalcode_delivery = $urbitStoreApi->ajaxCheckZipCode($postcode);
+
+        die(Tools::jsonEncode($postalcode_delivery));
+    }
+
 
     protected function validateDelivery()
     {

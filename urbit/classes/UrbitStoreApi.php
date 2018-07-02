@@ -26,18 +26,14 @@ class UrbitStoreApi
         return $ret;
     }
 
-    public function ajaxCheckZipCode($user_street, $user_postcode, $user_city)
+    public function ajaxCheckZipCode($postcode)
     {
         $urbApi = new UbitAPIWrapper();
         //validate a postal code : 11143 Stockholm
-        $validate_return = $urbApi->validateDeliveryAddress($user_street, $user_postcode, $user_city);
 
-        return array(
-            'ajaxCheckZipCode' => $validate_return->hasError() ? 'false' : 'true',
-            'error' => $validate_return->error_message,
-            'zipcode' => $user_postcode,
-            'validate_return' => $validate_return->args
-        );
+        $validate_return = $urbApi->validatePostalCode($postcode);
+
+        return $validate_return->args;
     }
 
     public function ajaxCheckValidateDelivery($delivery_options)

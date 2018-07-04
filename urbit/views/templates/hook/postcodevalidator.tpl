@@ -40,11 +40,10 @@
 
 <div class="urb-it-validator">
     <p>
-        <img src="{$urbit_img_path|escape:'html':'utf-8'}urbit_post.jpg" style="width: 50px;">{l s='Can you purchase with
-        urb-it?' mod='urbit'}
+        <img src="{$urbit_img_path|escape:'html':'utf-8'}urbit_post.jpg" style="width: 50px;">{l s='Can you purchase with urb-it?' mod='urbit'}
     </p>
     <div class="input-group">
-        <input type="text" class="form-control" placeholder="Enter Zipcode" name="enter_zipcocde" id="enter_zipcode"
+        <input type="text" class="form-control" placeholder={l s='Enter Zipcode' mod='urbit'} name="enter_zipcocde" id="enter_zipcode"
                value="" style="height: 32px;">
         <span class="input-group-btn">
 			<button class="btn btn-primary" type="button" id="check_zipcode" name="zipcode">{l s='Check' mod='urbit'}</button>

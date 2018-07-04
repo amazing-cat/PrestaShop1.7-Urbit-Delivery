@@ -176,6 +176,7 @@ class UbitAPIWrapper
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
         curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+        curl_setopt($ch, CURLOPT_USERAGENT, 'PrestaShop1.7-Urbit-Delivery/urbit');
 
         $headers = $this->method === 'GET' && $this->needAuthorization == false ?
             array(

@@ -2,7 +2,7 @@
 
 URB-IT SHIPPING PRESTASHOP
 
-Facts ●	Version: 1.1.7.1 ●	extension key: PrestaShop-Urbit-Delivery ●	Addons page : Urb-it delivery service module ● extension on GitHub
+Facts ●	Version: 1.1.6.3 ●	extension key: PrestaShop-Urbit-Delivery ●	Addons page : Urb-it delivery service module ● extension on GitHub
 
 ##Prerequisites##
 

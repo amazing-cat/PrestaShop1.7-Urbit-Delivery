@@ -278,6 +278,8 @@
                                 $("#urb_options_now").css("display", "none");
                                 $("#msg_urb_now_not_available").css("display", "block");
                             }
+
+                            $('.carrier-extra-content').show();
                         },
                         error: function (errorThrown) {
                             console.log(errorThrown);

@@ -54,9 +54,10 @@ $_MODULE['<{urbit}prestashop>shipping_sp_time_77587239bf4c54ea493c7033e1dbf636']
 $_MODULE['<{urbit}prestashop>shipping_sp_time_dd7bf230fde8d4836917806aff6a6b27'] = 'Adresse';
 $_MODULE['<{urbit}prestashop>shipping_sp_time_25f75488c91cb6c3bab92672e479619f'] = 'Code postal';
 $_MODULE['<{urbit}prestashop>shipping_sp_time_57d056ed0984166336b7879c2af3657f'] = 'Ville';
+$_MODULE['<{urbit}prestashop>shipping_sp_time_716de874a0d74f25c0aa8c444c3a7539'] = 'Préfixe';
 $_MODULE['<{urbit}prestashop>shipping_sp_time_ca66604a881a5024c63302eb43577fa6'] = 'Numéro de téléphone du destinataire';
 $_MODULE['<{urbit}prestashop>shipping_sp_time_615693bdb0c931befb23a844d45cdd07'] = 'Comment souhaitez-vous être contacté ?';
-$_MODULE['<{urbit}prestashop>shipping_sp_time_5a2e88e4bcb0db51cf466836a9e4425f'] = 'Numéro au format international ex: +336XXXXXXXX';
+$_MODULE['<{urbit}prestashop>shipping_sp_time_1f8261d17452a959e013666c5df45e07'] = 'Entrez votre Numéro de téléphone';
 $_MODULE['<{urbit}prestashop>shipping_sp_time_ce8ae9da5b7cd6c3df2929543a9af92d'] = 'Adresse email';
 $_MODULE['<{urbit}prestashop>shipping_sp_time_5aa9fb8ba610f45316ab8664db57331c'] = 'Avez-vous un message pour votre urber ?';
 $_MODULE['<{urbit}prestashop>shipping_sp_time_cfe1b4b75fb8dc152b124f9305835a11'] = 'Votre message';

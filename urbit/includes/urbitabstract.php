@@ -226,17 +226,15 @@ abstract class UrbitAbstract extends CarrierModule
         return $this->display($this->name . '.php', 'backofficeheader.tpl');
     }
 
-
-    //   /**
-    //  * Add the CSS & JavaScript files you want to be added on the FO.
-    //  */
-    // public function hookHeader()
-    // {
-    //     // if (isset($this->context->controller->page_name) && $this->context->controller->page_name == "order") {
-    //     //     $this->context->controller->addJS($this->_path.'/views/js/jquery.tools.min.js');
-    //     // }
-
-    // }
+    public function hookdisplayAdminOrder($params)
+    {
+        $orderinfo = new Order($params['id_order']);
+        $carrierinfo = new Carrier($orderinfo->id_carrier);
+          if ($carrierinfo->name =='urb-it delivery') {
+            return $this->display($this->name . '.php', 'admin_order.tpl');
+          }
+    }
+    
     public function hookHeader()
     {
         $this->context->controller->addCSS(
@@ -1062,6 +1060,7 @@ abstract class UrbitAbstract extends CarrierModule
         $user_delivery_address = $urbitCarrier->getUserAddress($cart->id_address_delivery);
         $user_billing_address = $urbitCarrier->getUserAddress($cart->id_address_invoice);
         $ret_zip_code_check = $urbitStoreApi->checkAddressDeliverable($user_delivery_address);
+        var_dump($ret_zip_code_check);
         $active_carriers = $urbitCarrier->getActiveCarriers($this->name);
 
         $carrier_id = '';

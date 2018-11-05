@@ -11,8 +11,6 @@ require_once(dirname(__FILE__) . '/../../classes/UrbitStoreApi.php');
 require_once(dirname(__FILE__) . '/../../classes/UrbitConfigurations.php');
 require_once(dirname(__FILE__) . '/../../models/UrbitCart.php');
 
-header('Content-Type', 'application/json');
-
 class UrbitShippingOptionsModuleFrontController extends FrontController
 {
     public function displayAjax()
@@ -84,7 +82,7 @@ class UrbitShippingOptionsModuleFrontController extends FrontController
 
     protected function validateDelivery()
     {
-        $date = DateTime::createFromFormat('Y-m-d H:i:s', Tools::getValue('del_time'), new DateTimeZone('CET'));
+        $date = DateTime::createFromFormat('Y-m-d H:i:s', ltrim(Tools::getValue('del_time')), new DateTimeZone('CET'));
 
         //format order expected date to ISO standard
         $delivery_expected_at = $date->format('Y-m-d\TH:i:sP');
@@ -98,10 +96,10 @@ class UrbitShippingOptionsModuleFrontController extends FrontController
             'del_zip_code' => Tools::getValue('del_zip_code'),
             'del_city' => Tools::getValue('del_city'),
             'del_contact_mail' => Tools::getValue('del_contact_mail'),
-            'del_contact_phone' => Tools::getValue('del_contact_phone'),
+            'del_contact_phone' => "+" . Tools::getValue('del_contact_phone_prefix') . Tools::getValue('del_contact_phone'),
             'del_advise_message' => Tools::getValue('del_advise_message'),
             'del_is_gift' => Tools::getValue('del_is_gift'),
-            'del_gift_receiver_phone' => Tools::getValue('del_gift_receiver_phone'),
+            'del_gift_receiver_phone' => "+" . Tools::getValue('del_gift_receiver_phone_prefix') . Tools::getValue('del_gift_receiver_phone'),
             'del_type' => Tools::getValue('del_type')
         );
 
@@ -166,10 +164,10 @@ class UrbitShippingOptionsModuleFrontController extends FrontController
             'del_zip_code' => Tools::getValue('del_zip_code'),
             'del_city' => Tools::getValue('del_city'),
             'del_contact_mail' => Tools::getValue('del_contact_mail'),
-            'del_contact_phone' => Tools::getValue('del_contact_phone'),
+            'del_contact_phone' => "+" . Tools::getValue('del_contact_phone_prefix') . Tools::getValue('del_contact_phone'),
             'del_advise_message' => Tools::getValue('del_advise_message'),
             'del_is_gift' => Tools::getValue('del_is_gift'),
-            'del_gift_receiver_phone' => Tools::getValue('del_gift_receiver_phone'),
+            'del_gift_receiver_phone' => "+" . Tools::getValue('del_gift_receiver_phone_prefix') . Tools::getValue('del_gift_receiver_phone'),
             'del_type' => Tools::getValue('del_type')
         );
 
@@ -210,11 +208,11 @@ class UrbitShippingOptionsModuleFrontController extends FrontController
             'del_time' => Tools::getValue('del_time'),
             'del_zip_code' => Tools::getValue('del_zip_code'),
             'del_contact_mail' => Tools::getValue('del_contact_mail'),
-            'del_contact_phone' => Tools::getValue('del_contact_phone'),
+            'del_contact_phone' => "+" . Tools::getValue('del_contact_phone_prefix') . Tools::getValue('del_contact_phone'),
             'del_city' => Tools::getValue('del_city'),
             'del_advise_message' => Tools::getValue('del_advise_message'),
             'del_is_gift' => Tools::getValue('del_is_gift'),
-            'del_gift_receiver_phone' => Tools::getValue('del_gift_receiver_phone'),
+            'del_gift_receiver_phone' => "+" . Tools::getValue('del_gift_receiver_phone_prefix') . Tools::getValue('del_gift_receiver_phone'),
             'del_type' => Tools::getValue('del_type')
         );
         $cart = new Cart($this->context->cart->id);

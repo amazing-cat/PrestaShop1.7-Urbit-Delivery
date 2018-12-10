@@ -81,9 +81,9 @@ class AdminUrbitAbstract extends ModuleAdminController
     /**
      * Set Media file include when controller called
      */
-    public function setMedia()
+    public function setMedia($isNewTheme = false)
     {
-        parent::setMedia();
+        parent::setMedia($isNewTheme);
         // fix error version 1.5.5 not call file ui.menu.js
         if (!array_key_exists('ui.menu', Media::$jquery_ui_dependencies['ui.autocomplete']['dependencies'])) {
             Media::$jquery_ui_dependencies['ui.autocomplete']['dependencies'][] = 'ui.menu';
@@ -617,5 +617,35 @@ class AdminUrbitAbstract extends ModuleAdminController
         exit();
     }
     // product carrier filter
-    
+
+    /**
+     * Returns HTML content for the Urbit order tab.
+     */
+    public function ajaxProcessGetOrderInfo()
+    {
+        $order = new Order(Tools::getValue('id_order'));
+        if (!Validate::isLoadedObject($order)) {
+            $this->errors[] = Tools::displayError('The order cannot be found within your database.');
+        }
+
+        $cart = reset(UrbitCart::getUrbitCartByOrderId($order->id));
+        $address = new Address($order->id_address_delivery, $this->context->language->id);
+        $phone = $cart['delivery_is_gift']
+            ? $cart['delivery_gift_receiver_phone']
+            : $cart['delivery_contact_phone'];
+        $date = date_parse($cart['delivery_time']);
+
+        echo <<<EOF
+{$cart['delivery_first_name']} {$cart['delivery_last_name']}<br/>
+{$cart['delivery_street']}<br/>
+{$cart['delivery_zip_code']} {$cart['delivery_city']}<br/>
+{$address->country}<br/>
+{$phone}<br/>
+<br/>
+<br/>
+Time: {$date['hour']}h {$date['minute']}<br/>
+Date: {$date['year']}/{$date['month']}/{$date['day']}
+EOF;
+        exit;
+    }
 }

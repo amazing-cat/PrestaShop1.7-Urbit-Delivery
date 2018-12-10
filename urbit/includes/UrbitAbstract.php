@@ -154,6 +154,7 @@ abstract class UrbitAbstract extends CarrierModule
             'saveProduct'         => $this->getTargetUrl($this->class_controller_admin, 'SaveProductSetting'),
             'editProduct'         => $this->getTargetUrl($this->class_controller_admin, 'EditProductSetting'),
             'deleteProduct'       => $this->getTargetUrl($this->class_controller_admin, 'DeleteProductSetting'),
+            'getOrderInfo'        => $this->getTargetUrl($this->class_controller_admin, 'GetOrderInfo'),
         );
     }
 
@@ -223,6 +224,13 @@ abstract class UrbitAbstract extends CarrierModule
             array('urbit_img_path'  => $this->_path.'views/img/',)
         );
 
+        if (Tools::getValue('controller') === 'AdminOrders') {
+            $urbit_token = Tools::getAdminTokenLite('AdminUrbit');
+            $this->context->smarty->assign('urbit_token', $urbit_token);
+
+            $this->context->controller->addJS($this->_path . 'views/js/orders.js');
+        }
+
         return $this->display($this->name . '.php', 'backofficeheader.tpl');
     }
 
@@ -234,7 +242,7 @@ abstract class UrbitAbstract extends CarrierModule
             return $this->display($this->name . '.php', 'admin_order.tpl');
           }
     }
-    
+
     public function hookHeader()
     {
         $this->context->controller->addCSS(
@@ -1060,7 +1068,6 @@ abstract class UrbitAbstract extends CarrierModule
         $user_delivery_address = $urbitCarrier->getUserAddress($cart->id_address_delivery);
         $user_billing_address = $urbitCarrier->getUserAddress($cart->id_address_invoice);
         $ret_zip_code_check = $urbitStoreApi->checkAddressDeliverable($user_delivery_address);
-        var_dump($ret_zip_code_check);
         $active_carriers = $urbitCarrier->getActiveCarriers($this->name);
 
         $carrier_id = '';

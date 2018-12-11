@@ -104,7 +104,7 @@
             return false;
         }
         function phoneValidationErrorMessage(error_id) {
-            $(error_id).html("Numéro de portable invalide. S'il vous plaît, définissez le numéro de téléphone avec le code du pays.");
+            $(error_id).html("Numéro de portable invalide.");
             $(error_id).css("display", "block");
             $('[name=confirmDeliveryOption]').addClass('gray-out');
             validate_error = 1;
@@ -416,7 +416,9 @@
         {
             radio_selected = $(".delivery-options-list  input[type='radio']:checked");
             var mobile = $("#contact_mobile_number").val();
-            if (!mobile.match(/^[+][0-9]/)) {
+            {literal}
+            if (!mobile.match(/^\d{6,}/)) {
+            {/literal}
                 $("#mobile_no_error").css("display", "block");
                 $("#mobile_no_error").html("{l s='Invalid Mobile Number' mod='urbit'}");
             } else {

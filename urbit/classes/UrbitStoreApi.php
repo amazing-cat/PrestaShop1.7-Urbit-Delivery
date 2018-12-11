@@ -55,9 +55,9 @@ class UrbitStoreApi
     {
         $urbApi = new UbitAPIWrapper();
 
-        $street = $user_delivery_address['address1'];
-        $postcode = $user_delivery_address['postcode'];
-        $city = $user_delivery_address['city'];
+        $street = isset($user_delivery_address['address1']) ? $user_delivery_address['address1'] : '';
+        $postcode = isset($user_delivery_address['postcode']) ? $user_delivery_address['postcode'] : '';
+        $city = isset($user_delivery_address['city']) ? $user_delivery_address['city'] : '';
 
         $validate_return = $urbApi->validateDeliveryAddress($street, $postcode, $city);
 

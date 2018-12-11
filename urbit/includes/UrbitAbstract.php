@@ -1077,6 +1077,16 @@ abstract class UrbitAbstract extends CarrierModule
             }
         }
 
+        // Set defaults for values used in the template.
+        $user_delivery_address = array_merge(array(
+            'firstname' => '',
+            'lastname' => '',
+            'address1' => '',
+            'city' => '',
+            'postcode' => '',
+            'phone' => '',
+        ), $user_delivery_address);
+
         $this->smarty->assign(array(
             'user_delivery_address'    => $user_delivery_address,
             'user_billing_address'     => $user_billing_address,

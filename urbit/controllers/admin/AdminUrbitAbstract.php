@@ -628,7 +628,8 @@ class AdminUrbitAbstract extends ModuleAdminController
             $this->errors[] = Tools::displayError('The order cannot be found within your database.');
         }
 
-        $cart = reset(UrbitCart::getUrbitCartByOrderId($order->id));
+        $carts = UrbitCart::getUrbitCartByOrderId($order->id);
+        $cart = reset($carts);
         $address = new Address($order->id_address_delivery, $this->context->language->id);
         $phone = $cart['delivery_is_gift']
             ? $cart['delivery_gift_receiver_phone']

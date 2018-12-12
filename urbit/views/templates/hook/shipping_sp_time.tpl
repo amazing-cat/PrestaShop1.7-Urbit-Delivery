@@ -6,36 +6,37 @@
 * @license
 *}
 
-{literal}
 <style>
 @font-face {
-    font-family:'Glyphicons Halflings';
-    src:url('//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/fonts/glyphicons-halflings-regular.eot');
-    src:url('//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'),
-    url('//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/fonts/glyphicons-halflings-regular.woff') format('woff'),
-    url('//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/fonts/glyphicons-halflings-regular.ttf') format('truetype'),
-    url('//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/fonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular') format('svg');
+  font-family: 'Glyphicons Halflings';
+  src: url('{$base_url}modules/urbit/views/fonts/webfonts/glyphicons-halflings-regular.eot');
+  src: url('{$base_url}modules/urbit/views/fonts/webfonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'),
+       url('{$base_url}modules/urbit/views/fonts/webfonts/glyphicons-halflings-regular.woff2') format('woff2'),
+       url('{$base_url}modules/urbit/views/fonts/webfonts/glyphicons-halflings-regular.woff') format('woff'),
+       url('{$base_url}modules/urbit/views/fonts/webfonts/glyphicons-halflings-regular.ttf') format('truetype'),
+       url('{$base_url}modules/urbit/views/fonts/webfonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
 }
-
 .glyphicon {
-    position:relative;
-    top:1px;
-    display:inline-block;
-    font-family:'Glyphicons Halflings';
-    font-style:normal;
-    font-weight:normal;
-    line-height:1;
-    -webkit-font-smoothing:antialiased;
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-family: 'Glyphicons Halflings';
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-.glyphicon-calendar:before{content:"\1f4c5";}
+{literal}
+.glyphicon-calendar:before{content: "\e109";}
 .glyphicon-chevron-left:before{content:"\e079";}
 .glyphicon-chevron-right:before{content:"\e080";}
 .glyphicon-screenshot:before{content:"\e087";}
-</style>
 {/literal}
+</style>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.css"/>
+<link rel="stylesheet" href="{$base_url}modules/urbit/views/css/bootstrap-datetimepicker.min.css"/>
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
@@ -43,9 +44,9 @@
     window.jq = $;
 </script>
 
-<script src="https://momentjs.com/downloads/moment.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+<script src="{$base_url}modules/urbit/views/js/moment.min.js"></script>
+<script src="{$base_url}modules/urbit/views/js/bootstrap.min.js"></script>
+<script src="{$base_url}modules/urbit/views/js/bootstrap-datetimepicker.min.js"></script>
 
 <script type="text/javascript">
     var urb_carrier_id = "{$carrier_id|escape:'htmlall':'UTF-8'}";
@@ -661,7 +662,8 @@
                     if(data) {
                         var open_dates = $.parseJSON(data);
 
-                        jq('#sp_time_date_picker').datetimepicker({
+                        var datePicker = jq('#sp_time_date_picker');
+                        datePicker.datetimepicker({
                             format: 'YYYY-MM-DD',
                             showTodayButton: true,
                             minDate: moment(),
@@ -669,6 +671,11 @@
                         }).on('dp.change', function (e) {
                             jq(this).datetimepicker('hide');
                             getDeliveryHours(e.date);
+                        });
+
+                        var datePickerInput = jq('#sp_time_date');
+                        datePickerInput.on('click', function (e) {
+                            datePicker.datetimepicker('show');
                         });
 
                         /*var options = '<option value="">Select Date</option>';

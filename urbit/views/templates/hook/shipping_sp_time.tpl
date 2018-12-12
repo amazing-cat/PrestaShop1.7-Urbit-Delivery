@@ -164,7 +164,7 @@
                 }
             });
             if ($("#urb_options_now i").hasClass('fa-check')) {
-                del_time = datetime;
+                del_time = datetime + "";
             } else if ($("#sp_time i").hasClass('fa-check')) {
                 var spDate = $("#sp_time_date").val();
                 var spHour = $("#sp_time_hour").val();
@@ -202,11 +202,18 @@
                 window.__fieldValidationAjax_Flag = 1;
             }
             if ($("#urb_options_now i").hasClass('fa-check')) {
-                del_time = datetime;
+                del_time = datetime + "";
                 del_type = 'OneHour';
             }
             if ($("#sp_time i").hasClass('fa-check')) {
-                del_time = $("#sp_time_date").val() + " " + $("#sp_time_hour").val() + ":" + $("#sp_time_minute").val() + ":00";
+                var spDate = $("#sp_time_date").val();
+                var spHour = $("#sp_time_hour").val();
+                var spMinute = $("#sp_time_minute").val();
+                if (spDate == "" || spHour == "" || spMinute == "") {
+                    del_time = datetime + "";
+                } else {
+                    del_time = spDate + " " + spHour + ":" + spMinute + ":00";
+                }
                 del_type = 'Specific';
             }
             if ($("#hp_urbit_check_box_1 i").hasClass('fa-check-square')) {
@@ -332,7 +339,9 @@
                                 $("#msg_urb_now_not_available").css("display", "block");
                             }
 
-                            $('.carrier-extra-content').show();
+                            var parent = $(".delivery-options-list  input[type='radio']:checked").parents('.delivery-option');
+                            var content = parent.length ? $('.carrier-extra-content', parent) : $('.carrier-extra-content');
+                            content.show();
                         },
                         error: function (errorThrown) {
                             console.log(errorThrown);

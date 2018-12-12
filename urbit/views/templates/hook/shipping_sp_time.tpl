@@ -6,14 +6,55 @@
 * @license
 *}
 
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<style>
+@font-face {
+  font-family: 'Glyphicons Halflings';
+  src: url('{$base_url}modules/urbit/views/fonts/webfonts/glyphicons-halflings-regular.eot');
+  src: url('{$base_url}modules/urbit/views/fonts/webfonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'),
+       url('{$base_url}modules/urbit/views/fonts/webfonts/glyphicons-halflings-regular.woff2') format('woff2'),
+       url('{$base_url}modules/urbit/views/fonts/webfonts/glyphicons-halflings-regular.woff') format('woff'),
+       url('{$base_url}modules/urbit/views/fonts/webfonts/glyphicons-halflings-regular.ttf') format('truetype'),
+       url('{$base_url}modules/urbit/views/fonts/webfonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+}
+.glyphicon {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-family: 'Glyphicons Halflings';
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+{literal}
+.glyphicon-calendar:before{content: "\e109";}
+.glyphicon-chevron-left:before{content:"\e079";}
+.glyphicon-chevron-right:before{content:"\e080";}
+.glyphicon-screenshot:before{content:"\e087";}
+{/literal}
+</style>
+
+<link rel="stylesheet" href="{$base_url}modules/urbit/views/css/bootstrap-datetimepicker.min.css"/>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+<script>
+    window.jq = $;
+</script>
+
+<script src="{$base_url}modules/urbit/views/js/moment.min.js"></script>
+<script src="{$base_url}modules/urbit/views/js/bootstrap.min.js"></script>
+<script src="{$base_url}modules/urbit/views/js/bootstrap-datetimepicker.min.js"></script>
+
 <script type="text/javascript">
     var urb_carrier_id = "{$carrier_id|escape:'htmlall':'UTF-8'}";
     var user = "{$logged_user_id|escape:'htmlall':'UTF-8'}";
     var zip_code_deliverable = "{$zip_code_deliverable|escape:'htmlall':'UTF-8'}";
     function initUrbit($) {
-        var ret_field_validate, ret_field_validate_ajax, del_is_gift, del_gift_receiver_phone, del_gift_receiver_phone_prefix, del_time, del_name,
-            del_first_name, del_last_name, del_street, del_zip_code, del_city, del_contact_phone, del_contact_phone_prefix,
+        var ret_field_validate, ret_field_validate_ajax, del_is_gift, del_gift_receiver_phone, del_time, del_name,
+            del_first_name, del_last_name, del_street, del_zip_code, del_city, del_contact_phone,
             del_contact_mail, del_advise_message, del_type;
         var firstDeliveryMinutes= "00";
         var lastDeliveryMinutes= "00";
@@ -64,7 +105,7 @@
             return false;
         }
         function phoneValidationErrorMessage(error_id) {
-            $(error_id).html("Numéro de portable invalide. S'il vous plaît, définissez le numéro de téléphone avec le code du pays.");
+            $(error_id).html("Numéro de portable invalide.");
             $(error_id).css("display", "block");
             $('[name=confirmDeliveryOption]').addClass('gray-out');
             validate_error = 1;
@@ -91,14 +132,14 @@
             }
         }
 
-         function phoneNumberValidation(del_contact_phone_prefix, del_contact_phone, error_empty_id, error_format_id) {
-            if (del_contact_phone == "" || del_contact_phone_prefix == "") {
+         function phoneNumberValidation(del_contact_phone, error_empty_id, error_format_id) {
+            if (del_contact_phone == "") {
                 emptyMessage(error_empty_id);
             } else {
-                var fullPhoneNumber = "+" + del_contact_phone_prefix + del_contact_phone;
+                var fullPhoneNumber = del_contact_phone;
 
                 {literal}
-                if (!fullPhoneNumber.match(/^\+[1-9]\d{6,}/)) {
+                if (!fullPhoneNumber.match(/^\d{6,}/)) {
                 {/literal}
                     phoneValidationErrorMessage(error_format_id);
                 }
@@ -115,7 +156,6 @@
                     { input_id: "#hp_urbit_del_city", error_id: "#del_city_error" },
                     { input_id: "#hp_urbit_del_postcode", error_id: "#del_zip_error" },
                     { input_id: "#contact_mobile_number", error_id: "#del_contact_mobile_number_error" },
-                    { input_id: "#contact_mobile_number_prefix", error_id: "#del_contact_mobile_number_error" },
                     { input_id: "#contact_email_address", error_id: "#del_contact_email_address_error" }
             ];
             $.each(requiredInputs, function(key, value ) {
@@ -124,7 +164,7 @@
                 }
             });
             if ($("#urb_options_now i").hasClass('fa-check')) {
-                del_time = datetime;
+                del_time = datetime + "";
             } else if ($("#sp_time i").hasClass('fa-check')) {
                 var spDate = $("#sp_time_date").val();
                 var spHour = $("#sp_time_hour").val();
@@ -136,15 +176,11 @@
             }
             //validate phone numbers
             del_contact_phone = $("#contact_mobile_number").val();
-            del_contact_phone_prefix = $("#contact_mobile_number_prefix").val();
-
-            phoneNumberValidation(del_contact_phone_prefix, del_contact_phone, "#del_gift_phone_error", "#del_contact_mobile_number_error");
+            phoneNumberValidation(del_contact_phone, "#del_gift_phone_error", "#del_contact_mobile_number_error");
 
             if ($("#hp_urbit_check_box_1 i").hasClass('fa-check-square')) {
                 del_gift_receiver_phone = $("#hp_urbit_del_phone").val();
-
-                 del_gift_receiver_phone_prefix = $("#hp_urbit_del_phone_prefix").val();
-                 phoneNumberValidation(del_gift_receiver_phone_prefix, del_gift_receiver_phone, "#del_gift_phone_error", "#del_gift_phone_format_error")
+                phoneNumberValidation(del_gift_receiver_phone, "#del_gift_phone_error", "#del_gift_phone_format_error")
             }
             //validate zipcode
             if (!$.isNumeric($("#hp_urbit_del_postcode").val())){
@@ -161,23 +197,28 @@
         function fieldValidationAjax() {
             del_is_gift = 0;
             del_gift_receiver_phone = "";
-            del_gift_receiver_phone_prefix = "";
 
             if (!window.__fieldValidationAjax_Flag) {
                 window.__fieldValidationAjax_Flag = 1;
             }
             if ($("#urb_options_now i").hasClass('fa-check')) {
-                del_time = datetime;
+                del_time = datetime + "";
                 del_type = 'OneHour';
             }
             if ($("#sp_time i").hasClass('fa-check')) {
-                del_time = $("#sp_time_date").val() + " " + $("#sp_time_hour").val() + ":" + $("#sp_time_minute").val() + ":00";
+                var spDate = $("#sp_time_date").val();
+                var spHour = $("#sp_time_hour").val();
+                var spMinute = $("#sp_time_minute").val();
+                if (spDate == "" || spHour == "" || spMinute == "") {
+                    del_time = datetime + "";
+                } else {
+                    del_time = spDate + " " + spHour + ":" + spMinute + ":00";
+                }
                 del_type = 'Specific';
             }
             if ($("#hp_urbit_check_box_1 i").hasClass('fa-check-square')) {
                 del_is_gift = 1;
                 del_gift_receiver_phone = $("#hp_urbit_del_phone").val();
-                del_gift_receiver_phone_prefix = $("#hp_urbit_del_phone_prefix").val();
             }
 
             del_name = $("#hp_urbit_del_name").val();
@@ -187,7 +228,6 @@
             del_zip_code = $("#hp_urbit_del_postcode").val();
             del_city = $("#hp_urbit_del_city").val();
             del_contact_phone = $("#contact_mobile_number").val();
-            del_gift_receiver_phone_prefix = $("#hp_urbit_del_phone_prefix").val();
             del_contact_mail = $("#contact_email_address").val();
             del_advise_message = $("#hp_urbit_ship_extra_msg").val();
             window.__fieldValidationAjax_Flag = Math.random();
@@ -208,7 +248,6 @@
                     del_zip_code : del_zip_code,
                     del_city : del_city,
                     del_contact_phone : del_contact_phone,
-                     del_gift_receiver_phone_prefix : del_gift_receiver_phone_prefix,
                     del_contact_mail : del_contact_mail,
                     del_advise_message : del_advise_message,
                     del_type : del_type,
@@ -286,7 +325,6 @@
                             del_city : del_city,
                             del_zip_code : del_zip_code,
                             del_contact_phone : del_contact_phone,
-                             del_contact_phone_prefix: del_contact_phone_prefix,
                             del_contact_mail : del_contact_mail,
                             del_advise_message : del_advise_message,
                             del_type : del_type,
@@ -301,7 +339,9 @@
                                 $("#msg_urb_now_not_available").css("display", "block");
                             }
 
-                            $('.carrier-extra-content').show();
+                            var parent = $(".delivery-options-list  input[type='radio']:checked").parents('.delivery-option');
+                            var content = parent.length ? $('.carrier-extra-content', parent) : $('.carrier-extra-content');
+                            content.show();
                         },
                         error: function (errorThrown) {
                             console.log(errorThrown);
@@ -349,7 +389,7 @@
                 $(this).find('i.far').addClass("fa-check-square");
                 $(".hp_urbit_ship_send").find('input[type="text"]').val("");
 
-               if (del_gift_receiver_phone == "" || del_gift_receiver_phone_prefix == "") {
+               if (del_gift_receiver_phone == "") {
                     $('[name=processCarrier]').addClass('gray-out');
                     validate_error = 1;
                 }
@@ -386,7 +426,9 @@
         {
             radio_selected = $(".delivery-options-list  input[type='radio']:checked");
             var mobile = $("#contact_mobile_number").val();
-            if (!mobile.match(/^[+][0-9]/)) {
+            {literal}
+            if (!mobile.match(/^\d{6,}/)) {
+            {/literal}
                 $("#mobile_no_error").css("display", "block");
                 $("#mobile_no_error").html("{l s='Invalid Mobile Number' mod='urbit'}");
             } else {
@@ -398,7 +440,6 @@
                 }
                 del_is_gift = 0;
                 del_gift_receiver_phone = "";
-                del_gift_receiver_phone_prefix = "";
                 if ($("#urb_options_now i").hasClass('fa-check')) {
                     del_time = datetime;
                     del_type = 'OneHour';
@@ -409,7 +450,6 @@
                 if ($("#hp_urbit_check_box_1 i").hasClass('fa-check-square')) {
                     del_is_gift = 1;
                     del_gift_receiver_phone = $("#hp_urbit_del_phone").val();
-                    del_gift_receiver_phone_prefix = $("#hp_urbit_del_phone_prefix").val();
                 }
                 del_name = $("#hp_urbit_del_name").val();
                 del_first_name = $("#hp_urbit_del_first_name").val();
@@ -418,7 +458,6 @@
                 del_city = $("#hp_urbit_del_city").val();
                 del_zip_code = $("#hp_urbit_del_postcode").val();
                 del_contact_phone = $("#contact_mobile_number").val();
-                del_contact_phone_prefix = $("#contact_mobile_number_prefix").val();
                 del_contact_mail = $("#contact_email_address").val();
                 del_advise_message = $("#hp_urbit_ship_extra_msg").val();
                 $.ajax({
@@ -437,7 +476,6 @@
                         del_city : del_city,
                         del_zip_code : del_zip_code,
                         del_contact_phone : del_contact_phone,
-                        del_contact_phone_prefix : del_contact_phone_prefix,
                         del_contact_mail : del_contact_mail,
                         del_advise_message : del_advise_message,
                         del_type : del_type,
@@ -508,9 +546,10 @@
         $("#hp_urbit_display_discount").on('click', function () {
             $('.hp_urbit_ship_discount').stop(true, true).slideToggle("slow");
         });
+
         /*get time for the date*/
-        $('#sp_time_date').change(function () {
-            var selectDate = $(this).val();
+        function getDeliveryHours(deliveryDate) {
+            var selectDate = deliveryDate.format('YYYY-MM-DD');
             var d = new Date();
             var today =  d.toISOString().substring(0, 10);
             var nowTime = d.getHours();
@@ -559,7 +598,12 @@
                     console.log(errorThrown);
                 }
             });
+        }
+
+        $('#sp_time_date').change(function () {
+            getDeliveryHours($(this).val());
         });
+
         /*get the minutes*/
         $("#sp_time_hour").change(function() {
             var selectHour = $(this).val();
@@ -623,18 +667,35 @@
                     fc         : 'module',
                     controller : 'ShippingOptions'
                 },
-                 success: function (data) {
-                     if(data) {
-                         var open_dates = $.parseJSON(data);
-                         var options = '<option value="">Select Date</option>';
-                         for (var x = 0; x < open_dates.length; x++) {
-                            var days = new Date(open_dates[x]);
-                            options += '<option value="' + open_dates[x] + '">' + weekday[days.getDay()] + '</option>';
-                         }
-                         $('#sp_time_date').html(options);
-                         $("#sp_time_date").prop("disabled", false);
-                     }
-                 }
+                success: function (data) {
+                    if(data) {
+                        var open_dates = $.parseJSON(data);
+
+                        var datePicker = jq('#sp_time_date_picker');
+                        datePicker.datetimepicker({
+                            format: 'YYYY-MM-DD',
+                            showTodayButton: true,
+                            minDate: moment(),
+                            maxDate: moment(open_dates[open_dates.length - 1])
+                        }).on('dp.change', function (e) {
+                            jq(this).datetimepicker('hide');
+                            getDeliveryHours(e.date);
+                        });
+
+                        var datePickerInput = jq('#sp_time_date');
+                        datePickerInput.on('click', function (e) {
+                            datePicker.datetimepicker('show');
+                        });
+
+                        /*var options = '<option value="">Select Date</option>';
+                        for (var x = 0; x < open_dates.length; x++) {
+                        var days = new Date(open_dates[x]);
+                        options += '<option value="' + open_dates[x] + '">' + weekday[days.getDay()] + '</option>';
+                        }
+                        $('#sp_time_date').html(options);
+                        $("#sp_time_date").prop("disabled", false);*/
+                    }
+                }
             });
         }
     }
@@ -673,9 +734,15 @@
             <div class="row hp_urbit_sp_time">
                 <p class="hp_urbit_validation_error" style="padding-left: 15px;" id="del_spdate_error"></p>
                 <div class="col-xs-6">
-                    <select class="fixed-width-xl" id="sp_time_date" disabled>
+                    <!--<select class="fixed-width-xl" id="sp_time_date" disabled>
                         <option value="">Select Date</option>
-                    </select>
+                    </select>-->
+                    <div class='input-group date fixed-width-xl' id='sp_time_date_picker'>
+                        <input id="sp_time_date" type='text' class="form-control" data-format="DD-MM-YYY"/>
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
                 </div>
                 <div class="col-xs-3">
                     <select class="fixed-width-xl" id="sp_time_hour" disabled>
@@ -728,16 +795,8 @@
                 </div>
                 <p class="hp_urbit_validation_error" id="del_gift_phone_error"></p>
                 <p class="hp_urbit_validation_error" id="del_gift_phone_format_error"></p>
-                        <div class="row" id="recipient-phone-row">
-                    <div class="col-sm-3 col-xs-5 phone-prefix-wrapper">
-                        <div class="input-group">
-                            <span class="input-group-addon">+</span>
-                            <input type="text" class="form-control urbit_del_validate" id="hp_urbit_del_phone_prefix"
-                                   placeholder="{l s='Prefix' mod='urbit'}  "
-                                   value="33">
-                        </div>
-                    </div>
-                    <div class="col-sm-9 col-xs-7 phone-wrapper">
+                <div id="recipient-phone-row">
+                    <div class="phone-wrapper">
                         <div class="form-group">
                             <input type="text" class="form-control urbit_del_validate" id="hp_urbit_del_phone"
                                    placeholder="{l s='Recipient\'s mobile number' mod='urbit'}"
@@ -751,21 +810,11 @@
             <h4 class="hp_urbit_ship_h4 mobile_title">{l s='How can we best get in touch with you?' mod='urbit'}</h4>
             <p class=" hp_urbit_validation_error" id="del_contact_mobile_number_error" style=""></p>
             <p class="hp_urbit_validation_error" id="del_contact_mobile_number_format_error"></p>
-            <div class="row">
-                <div class="col-sm-3 col-xs-5 phone-prefix-wrapper">
-                    <div class="input-group">
-                    <span class="input-group-addon">+</span>
-                        <input type="text" class="form-control urbit_del_validate" id="contact_mobile_number_prefix"
-                               placeholder="{l s='Prefix' mod='urbit'}"
-                               value="33" required>
-                    </div>
-                </div>
-                <div class="col-sm-9 col-xs-7 phone-wrapper">
-                    <div class="form-group">
-                        <input type="text" class="form-control urbit_del_validate" id="contact_mobile_number"
-                               placeholder="{l s='Phone number' mod='urbit'}"
-                               value="{$user_delivery_address.phone|escape:'htmlall':'UTF-8'}" required>
-                    </div>
+            <div class="phone-wrapper">
+                <div class="form-group">
+                    <input type="text" class="form-control urbit_del_validate" id="contact_mobile_number"
+                            placeholder="{l s='Phone number' mod='urbit'}"
+                            value="{$user_delivery_address.phone|escape:'htmlall':'UTF-8'}" required>
                 </div>
             </div>
 
@@ -899,9 +948,22 @@
         height: 40px;
         background-color: #F6F7F9;
         border: none;
-        font-size: 15px;
-        padding: 10px;
+        font-size: 14px;
+        padding: 10px 5px;
         width: 100%;
+        margin-top: 10px;
+    }
+
+    .hp_urbit_ship_where_do_go input {
+        height: 40px;
+        background-color: #F6F7F9;
+        border: none;
+        font-size: 14px;
+        padding: 10px 5px;
+        width: 100%;
+    }
+
+    #sp_time_date_picker {
         margin-top: 10px;
     }
 
@@ -1019,28 +1081,16 @@
     #urb_options_now, #sp_time, #hp_urbit_del_first_name,
     #hp_urbit_del_last_name, #hp_urbit_del_postcode,
     #hp_urbit_del_citym #hp_urbit_del_city, #hp_urbit_del_city,
-    #contact_mobile_number, #contact_mobile_number_prefix, #contact_email_address,
+    #contact_mobile_number, #contact_email_address,
     #hp_urbit_ship_extra_msg, #hp_urbit_del_street,
-    #sp_time_date, #sp_time_hour, #sp_time_minute, #hp_urbit_del_phone, #hp_urbit_del_phone_prefix {
+    #sp_time_date, #sp_time_hour, #sp_time_minute, #hp_urbit_del_phone {
 
     }
-
 
     .input-group-addon {
         border: none;
         background-color: transparent;
         font-weight: bold;
-    }
-
-    .phone-prefix-wrapper {
-        padding-right: 5px;
-    }
-
-    .phone-wrapper {
-        padding-left: 5px;
-    }
-    #contact_mobile_number_prefix, #hp_urbit_del_phone_prefix{
-        width: 36px;
     }
 
     /* @media screen and (max-width: 640px)

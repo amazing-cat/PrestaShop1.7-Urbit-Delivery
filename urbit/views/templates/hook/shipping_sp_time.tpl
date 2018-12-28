@@ -194,7 +194,7 @@
             return validate_error !== 1;
         }
 
-        function fieldValidationAjax() {
+        function fieldValidationAjax(successCallback = null, errorCallback = null) {
             del_is_gift = 0;
             del_gift_receiver_phone = "";
 
@@ -282,11 +282,20 @@
                             getdeliveryDates();
                         }
                     }
+
+                    if (successCallback) {
+                        successCallback(validate_delivery);
+                    }
                 },
                 error: function (errorThrown) {
                     if (window.__fieldValidationAjax_Flag !== local__fieldValidationAjax_Flag) {
                         return;
                     }
+
+                    if (errorCallback) {
+                        errorCallback(errorThrown);
+                    }
+
                     console.log(errorThrown);
                 }
             });
@@ -410,20 +419,64 @@
                 fieldValidationAjax();
             }
         });
-        $('[name=confirmDeliveryOption]').click(function (e) {
+
+        var cartUpdated = false;
+        var $submitButton = $('[name=confirmDeliveryOption]');
+        $submitButton.click(function (e) {
             radio_selected = $(".delivery-options-list  input[type='radio']:checked");
-            if (urb_carrier_id == radio_selected.val()) {
-                if (fieldValidation()){
-                    fieldValidationAjax();
+            if (urb_carrier_id == radio_selected.val() && !cartUpdated) {
+                e.preventDefault();
+                $('#hp_urbit_submit_error').hide();
+
+                if (fieldValidation()) {
+                    fieldValidationAjax(function (data) {
+                        if (!data.error_code) {
+                            updateCart(function (data) {
+                                data = JSON.parse(data);
+                                if (data.success) {
+                                    cartUpdated = true;
+                                    $submitButton.click();
+                                } else {
+                                    // updateCart - validation error.
+                                    var msg = "Can't update cart (" + data.error_code + ": " + data.error_msg + ")";
+                                    $('#hp_urbit_submit_error p').text(msg);
+                                    $('#hp_urbit_submit_error').show();
+                                }
+                            }, function (error) {
+                                // updateCart - request error.
+                                var msg = "Can't update cart";
+                                if (error.status !== undefined && error.statusText !== undefined) {
+                                    msg += " (" + error.status + ": " + error.statusText + ")";
+                                }
+
+                                $('#hp_urbit_submit_error p').text(msg);
+                                $('#hp_urbit_submit_error').show();
+                            });
+                        } else {
+                            // fieldValidationAjax - validation error.
+                            var msg = "Validation error";
+                            if (error.error_code !== undefined && error.error_message !== undefined) {
+                                msg += " (" + error.error_code + ": " + error.error_message + ")";
+                            }
+
+                            $('#hp_urbit_submit_error p').text(msg);
+                            $('#hp_urbit_submit_error').show();
+                        }
+                    }, function (error) {
+                        // fieldValidationAjax - request error.
+                        var msg = "Validation error";
+                        if (error.status !== undefined && error.statusText !== undefined) {
+                            msg += " (" + error.status + ": " + error.statusText + ")";
+                        }
+
+                        $('#hp_urbit_submit_error p').text(msg);
+                        $('#hp_urbit_submit_error').show();
+                    });
                 }
-                if (validate_error == 1) {
-                    e.preventDefault();
-                }
-                updateCart();
             }
         });
-        function updateCart()
-        {
+
+        function updateCart(successCallback = null, errorCallback = null) {
             radio_selected = $(".delivery-options-list  input[type='radio']:checked");
             var mobile = $("#contact_mobile_number").val();
             {literal}
@@ -484,8 +537,14 @@
                         controller : 'ShippingOptions'
                     },
                     success: function (data) {
+                        if (successCallback) {
+                            successCallback(data);
+                        }
                     },
                     error: function (errorThrown) {
+                        if (errorCallback) {
+                            errorCallback(errorThrown);
+                        }
                     }
                 });
             }
@@ -839,11 +898,14 @@
     <div class="hp_urbit_validation_error_message" id="hp_urbit_address_validation_error">
         <p>Malformed address / Address outside the delivery area</p>
     </div>
-
+    <div class="hp_urbit_validation_error_message" id="hp_urbit_submit_error">
+        <p></p>
+    </div>
 </div>
 <div id="urb_agreement">En utilisant le service Urb-it vous acceptez nos <a target="_blank" href="https://urb-it.com/terms-of-service/">conditions d'utilisation</a>, et vous acceptez la <a target="_blank" href="https://urb-it.com/privacy-policy/">politique de confidentialité.</a></div>
 
 <style>
+    #hp_urbit_submit_error,
     #hp_urbit_address_validation_error {
         display: none;
         color: #F13340;

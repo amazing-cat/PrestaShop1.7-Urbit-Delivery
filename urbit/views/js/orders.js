@@ -5,7 +5,7 @@
             return;
         }
 
-        // Add click handler for dinamycally created tabs.
+        // Add click handler for dynamically created tabs.
         $tabs.on('click', 'a', function (e) {
             e.preventDefault();
             $(this).tab('show');

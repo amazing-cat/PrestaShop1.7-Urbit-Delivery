@@ -277,9 +277,10 @@ class UbitAPIWrapper
     private function getApiLogs($request, $type)
     {
         $apiCall = Tools::jsonEncode($request);
-        $id_cart = $this->context->cart->id;
-        if (!$id_cart) {
-            $id_cart = 000;
+        if (isset($this->context->cart) && isset($this->context->cart->id)) {
+            $id_cart = (int)$this->context->cart->id;
+        } else {
+            $id_cart = 0;
         }
 
         $sql = "INSERT INTO `" . _DB_PREFIX_ . "urbit_api_log`

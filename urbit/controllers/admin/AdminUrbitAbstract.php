@@ -635,8 +635,19 @@ class AdminUrbitAbstract extends ModuleAdminController
             ? $cart['delivery_gift_receiver_phone']
             : $cart['delivery_contact_phone'];
         $date = date_parse($cart['delivery_time']);
+        $id_cart = $cart['id_urbit_order_cart'];
+        $token = Tools::getAdminTokenLite('AdminUrbitDelivery');
+        $editUrl = "?controller=AdminUrbitDelivery&id_urbit_order_cart=$id_cart&updateurbit_order_cart&token=$token";
+        if (isset($_SERVER['HTTP_REFERER'])) {
+            $back = urlencode($_SERVER['HTTP_REFERER']);
+            $editUrl .= "&back=$back";
+        }
 
         echo <<<EOF
+<a class="btn btn-default pull-right" href="$editUrl">
+    <i class="icon-pencil"></i>
+    Edit
+</a>
 {$cart['delivery_first_name']} {$cart['delivery_last_name']}<br/>
 {$cart['delivery_street']}<br/>
 {$cart['delivery_zip_code']} {$cart['delivery_city']}<br/>

@@ -41,6 +41,30 @@ class Urbit extends UrbitAbstract
         $this->carrier_code = self::CARRIER_CODE_REGULAR;
     }
 
+    public function installTab($parent, $class_name, $name)
+    {
+        $tab = new Tab();
+        $tab->id_parent = (int)Tab::getIdFromClassName($parent);
+        $tab->parent_class_name = $parent;
+        $tab->name = array();
+
+        foreach (Language::getLanguages(true) as $lang) {
+            $tab->name[$lang['id_lang']] = $name;
+        }
+
+        $tab->class_name = $class_name;
+        $tab->module = $this->name;
+        $tab->active = 0;
+        return $tab->add();
+    }
+
+    public function uninstallTab($class_name)
+    {
+        $id_tab = (int)Tab::getIdFromClassName($class_name);
+        $tab = new Tab((int)$id_tab);
+        return $tab->delete();
+    }
+
     /**
      * Install module
      * @return boolean
@@ -54,7 +78,8 @@ class Urbit extends UrbitAbstract
         $installer->install() && $this->registerHook('header') &&
         $this->registerHook('actionOrderStatusPostUpdate') &&
         $this->registerHook('displayShoppingCart') &&
-        $this->registerHook('displayProductButtons');
+        $this->registerHook('displayProductButtons') &&
+        $this->installTab('AdminParentOrders', 'AdminUrbitDelivery', 'Urb-it deliveries');
     }
 
     /**
@@ -65,7 +90,8 @@ class Urbit extends UrbitAbstract
     public function uninstall()
     {
         $installer = new UrbitInstaller($this);
-        return parent::uninstall() && $installer->uninstall();
+        return parent::uninstall() && $installer->uninstall()
+            && $this->uninstallTab('AdminUrbitDelivery');
     }
 
     /**

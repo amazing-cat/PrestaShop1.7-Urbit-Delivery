@@ -431,16 +431,11 @@ class UrbitCart extends ObjectModel
 
     public static function updateResponseCode($responseCode, $urbitCartId)
     {
-        if($responseCode == UrbitShippingResponse::HTTP_STATUS_SUCCESS_PUT ) {
-            //return self::deleteUrbitCart($urbitCartId);
+        if ($responseCode == UrbitShippingResponse::HTTP_STATUS_SUCCESS_PUT) {
+            return self::deleteUrbitCart($urbitCartId);
         }
 
-        $ret = Db::getInstance()->execute(
-            'UPDATE ' . _DB_PREFIX_ . 'urbit_order_cart SET `response_code` ="' . pSQL($responseCode)
-            . '" WHERE `id_urbit_order_cart`=' . (int)$urbitCartId
-        );
-
-        return $ret;
+        return 1;
     }
 
     public static function updateCheckoutId($checkoutId, $cartId)

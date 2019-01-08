@@ -193,10 +193,8 @@ class AdminUrbitDeliveryController extends ModuleAdminController
                 '+5 minutes',
                 $this->getDeliveryDateTimestamp($delivery_item->first_delivery)
             );
-            $lastDeliveryTimestamp = strtotime(
-                '-5 minutes',
-                $this->getDeliveryDateTimestamp($delivery_item->last_delivery)
-            );
+
+            $lastDeliveryTimestamp = $this->getDeliveryDateTimestamp($delivery_item->last_delivery);
 
             if ($chosenDeliveryDateTimestamp >= $firstDeliveryTimestamp &&
                 $lastDeliveryTimestamp >= $chosenDeliveryDateTimestamp) {
@@ -206,7 +204,7 @@ class AdminUrbitDeliveryController extends ModuleAdminController
         }
 
         if (!$is_time_valid) {
-            $errors[] = "The expected delivery date and time not available.";
+            $errors[] = "The selected delivery date and time not available.";
         }
 
         return $is_address_valid && $is_time_valid;

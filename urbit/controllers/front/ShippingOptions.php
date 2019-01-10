@@ -235,7 +235,20 @@ class UrbitShippingOptionsModuleFrontController extends FrontController
         // save order delivery options
         $saveOrder = UrbitCart::setOrderCart($order_values);
 
-        die($saveOrder);
+        if ($saveOrder == 1) {
+            $ret = [
+                'success' => 1,
+            ];
+        } else {
+            $db = Db::getInstance();
+            $ret = [
+                'success' => 0,
+                'error_code' => $db->getNumberError(),
+                'error_msg' => $db->getMsgError(),
+            ];
+        }
+
+        die(Tools::jsonEncode($ret));
     }
 
     protected function validateSelectDate()

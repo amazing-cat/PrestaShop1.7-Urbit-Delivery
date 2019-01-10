@@ -226,7 +226,7 @@ abstract class UrbitAbstract extends CarrierModule
 
         if (Tools::getValue('controller') === 'AdminOrders') {
             $urbit_token = Tools::getAdminTokenLite('AdminUrbit');
-            $this->context->smarty->assign('urbit_token', $urbit_token);
+            $this->context->smarty->assign('urbit_token', $urbit_token, true);
 
             $this->context->controller->addJS($this->_path . 'views/js/orders.js');
         }
@@ -1278,7 +1278,7 @@ abstract class UrbitAbstract extends CarrierModule
      * Send delivery information to Urb-it by PUT request
      * @param $urbitCartId
      */
-    protected function sendUpdateCheckout($urbitCartId)
+    public function sendUpdateCheckout($urbitCartId)
     {
         $cart = UrbitCart::getUrbitCart($urbitCartId);
 
@@ -1318,7 +1318,11 @@ abstract class UrbitAbstract extends CarrierModule
             if (isset($ret_create_order->httpCode)) {
                 UrbitCart::updateResponseCode($ret_create_order->httpCode, $cart[0]['id_urbit_order_cart']);
             }
+
+            return $ret_create_order;
         }
+
+        return null;
     }
 
     /**

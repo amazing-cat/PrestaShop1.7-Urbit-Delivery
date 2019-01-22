@@ -208,7 +208,7 @@ class UbitAPIWrapper
 
         curl_close($ch);
         $this->response = new UrbitShippingResponse($this->result, $this->method, $httpStatusCode);
-        $this->getApiLogs($this->response, 'UrbitShippingResponse');
+        $this->getApiLogs($this->response->toArray(), 'UrbitShippingResponse');
 
         return $this->response;
     }

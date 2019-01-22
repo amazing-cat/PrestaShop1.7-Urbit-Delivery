@@ -180,4 +180,13 @@ class UrbitShippingResponse
     {
         return json_encode($this->args, JSON_PRETTY_PRINT);
     }
+
+    public function toArray()
+    {
+        $objectArray = [];
+        foreach($this as $key => $value) {
+            $objectArray[$key] = $value;
+        }
+        return $objectArray;
+    }
 }

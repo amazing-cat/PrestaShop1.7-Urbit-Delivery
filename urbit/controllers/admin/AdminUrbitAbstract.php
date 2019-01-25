@@ -621,30 +621,29 @@ class AdminUrbitAbstract extends ModuleAdminController
     /**
      * Returns HTML content for the Urbit order tab.
      */
-    public function ajaxProcessGetOrderInfo()
+    public function ajaxProcessGetOrderTabHtml()
     {
         $order = new Order(Tools::getValue('id_order'));
         if (!Validate::isLoadedObject($order)) {
             $this->errors[] = Tools::displayError('The order cannot be found within your database.');
         }
 
-        $carts = UrbitCart::getUrbitCartByOrderId($order->id);
-        $cart = reset($carts);
+        $cart = UrbitCart::getUrbitCartByOrderId($order->id);
         $address = new Address($order->id_address_delivery, $this->context->language->id);
         $phone = $cart['delivery_is_gift']
             ? $cart['delivery_gift_receiver_phone']
             : $cart['delivery_contact_phone'];
         $date = date_parse($cart['delivery_time']);
         $id_cart = $cart['id_urbit_order_cart'];
-        $token = Tools::getAdminTokenLite('AdminUrbitDelivery');
-        $editUrl = "?controller=AdminUrbitDelivery&id_urbit_order_cart=$id_cart&updateurbit_order_cart&token=$token";
+        $admin_delivery_token = Tools::getAdminTokenLite('AdminUrbitDelivery');
+        $editUrl = "?controller=AdminUrbitDelivery&id_urbit_order_cart=$id_cart&updateurbit_order_cart&token=$admin_delivery_token";
         if (isset($_SERVER['HTTP_REFERER'])) {
             $back = urlencode($_SERVER['HTTP_REFERER']);
             $editUrl .= "&back=$back";
         }
 
-        $token = Tools::getAdminTokenLite('AdminUrbit');
-        $logUrl = "?controller=AdminUrbit&action=getorderapilog&ajax=1&id_order=$order->id&token=$token";
+        $admin_token = Tools::getAdminTokenLite('AdminUrbit');
+        $logUrl = "?controller=AdminUrbit&action=getorderapilog&ajax=1&id_order=$order->id&token=$admin_token";
 
         echo <<<EOF
 <a class="btn btn-default pull-right" href="$editUrl">

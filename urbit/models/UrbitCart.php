@@ -389,7 +389,7 @@ class UrbitCart extends ObjectModel
 
     public static function getUrbitCartByOrderId($orderId)
     {
-        return Db::getInstance()->executeS('SELECT * FROM `' .
+        return Db::getInstance()->getRow('SELECT * FROM `' .
             _DB_PREFIX_ .
             'urbit_order_cart` WHERE `id_order`=' .
             (int)$orderId);

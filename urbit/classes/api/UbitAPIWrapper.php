@@ -195,7 +195,7 @@ class UbitAPIWrapper
         $apiRequest['url'] = $endpoint;
         $apiRequest['method'] = $this->method;
         $apiRequest['params'] = $json;
-        $this->getApiLogs($apiRequest, 'REQUEST');
+        $this->writeToApiLog($apiRequest, 'REQUEST');
 
         $this->result = Tools::jsonDecode(curl_exec($ch));
 
@@ -208,7 +208,7 @@ class UbitAPIWrapper
 
         curl_close($ch);
         $this->response = new UrbitShippingResponse($this->result, $this->method, $httpStatusCode);
-        $this->getApiLogs($this->response->toArray(), 'UrbitShippingResponse');
+        $this->writeToApiLog($this->response->toArray(), 'UrbitShippingResponse');
 
         return $this->response;
     }
@@ -274,7 +274,7 @@ class UbitAPIWrapper
         //return ($json);
     }
 
-    private function getApiLogs($request, $type)
+    private function writeToApiLog($request, $type)
     {
         $apiCall = Tools::jsonEncode($request);
         if (isset($this->context->cart) && isset($this->context->cart->id)) {
